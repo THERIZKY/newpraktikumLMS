@@ -39,8 +39,16 @@ async function PracticumGradesContent({
   }
   const assistantClassNames = new Set(
     practicum.classes
-      .filter((c) => c.assistantAssignments.some((a) => a.assistantId === userId))
-      .map((c) => c.name)
+      .filter(
+        (c: {
+          name: string;
+          assistantAssignments: { assistantId: string }[];
+        }) =>
+          c.assistantAssignments.some(
+            (a: { assistantId: string }) => a.assistantId === userId
+          )
+      )
+      .map((c: { name: string }) => c.name)
   );
   if (userRole === "ASSISTANT" && assistantClassNames.size === 0) {
     redirect("/grades");
@@ -106,12 +114,19 @@ async function PracticumGradesContent({
 
       <InteractiveMatrix
         practicumId={practicum.id}
-        components={components.map((c) => ({
-          id: c.id,
-          name: c.name,
-          weight: Number(c.weight),
-          isPerSession: c.isPerSession,
-        }))}
+        components={components.map(
+          (c: {
+            id: string;
+            name: string;
+            weight: unknown;
+            isPerSession: boolean;
+          }) => ({
+            id: c.id,
+            name: c.name,
+            weight: Number(c.weight),
+            isPerSession: c.isPerSession,
+          })
+        )}
         initialStudents={displayStudents}
         canPublish={canPublish}
         canEditScores={canEditScores}

@@ -64,30 +64,50 @@ async function SessionWorkspaceContent({
   const myEnrollment = canManage
     ? undefined
     : sess.practicumClass.studentEnrollments.find(
-        (enr) => enr.student.id === session?.user?.id
+        (enr: {
+          id: string;
+          student: { id: string; fullName: string; nim: string | null };
+        }) => enr.student.id === session?.user?.id
       );
   const myAttendance = myEnrollment
-    ? sess.attendances.find((a) => a.studentEnrollmentId === myEnrollment.id)
+    ? sess.attendances.find(
+        (a: {
+          studentEnrollmentId: string;
+          status: keyof typeof ATTENDANCE_LABEL;
+          notes: string | null;
+        }) => a.studentEnrollmentId === myEnrollment.id
+      )
     : undefined;
 
-  const attendanceMap = new Map(
-    sess.attendances.map((a) => [
-      a.studentEnrollmentId,
-      { status: a.status, notes: a.notes },
-    ])
+  const attendanceMap = new Map<
+    string,
+    { status: keyof typeof ATTENDANCE_LABEL; notes: string | null }
+  >(
+    sess.attendances.map(
+      (a: {
+        studentEnrollmentId: string;
+        status: keyof typeof ATTENDANCE_LABEL;
+        notes: string | null;
+      }) => [a.studentEnrollmentId, { status: a.status, notes: a.notes }]
+    )
   );
 
-  const studentRows = sess.practicumClass.studentEnrollments.map((enr) => {
-    const existing = attendanceMap.get(enr.id);
-    return {
-      studentEnrollmentId: enr.id,
-      studentId: enr.student.id,
-      fullName: enr.student.fullName,
-      nim: enr.student.nim,
-      status: existing?.status || "PRESENT",
-      notes: existing?.notes || "",
-    };
-  });
+  const studentRows = sess.practicumClass.studentEnrollments.map(
+    (enr: {
+      id: string;
+      student: { id: string; fullName: string; nim: string | null };
+    }) => {
+      const existing = attendanceMap.get(enr.id);
+      return {
+        studentEnrollmentId: enr.id,
+        studentId: enr.student.id,
+        fullName: enr.student.fullName,
+        nim: enr.student.nim,
+        status: existing?.status || "PRESENT",
+        notes: existing?.notes || "",
+      };
+    }
+  );
 
   return (
     <div className="space-y-6">
@@ -191,10 +211,18 @@ async function SessionWorkspaceContent({
                       </div>
                       {myAttendance ? (
                         <Badge
-                          variant={ATTENDANCE_LABEL[myAttendance.status].variant}
+                          variant={
+                            ATTENDANCE_LABEL[
+                              myAttendance.status as keyof typeof ATTENDANCE_LABEL
+                            ].variant
+                          }
                           className="text-sm px-3 py-1"
                         >
-                          {ATTENDANCE_LABEL[myAttendance.status].label}
+                          {
+                            ATTENDANCE_LABEL[
+                              myAttendance.status as keyof typeof ATTENDANCE_LABEL
+                            ].label
+                          }
                         </Badge>
                       ) : (
                         <Badge variant="outline" className="text-sm px-3 py-1">
@@ -225,8 +253,16 @@ async function SessionWorkspaceContent({
                 <p className="text-xs font-medium">Belum ada modul materi diunggah untuk sesi ini.</p>
               </div>
             ) : (
-              sess.materials.map((mat) => (
-                <Card key={mat.id} className="p-4 flex flex-col justify-between">
+              sess.materials.map(
+                (mat: {
+                  id: string;
+                  title: string;
+                  fileName: string;
+                  fileSize: number;
+                  createdAt: Date | string;
+                  uploader: { fullName: string };
+                }) => (
+                  <Card key={mat.id} className="p-4 flex flex-col justify-between">
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between">
                       <Badge variant="outline" className="text-[10px] font-mono">
@@ -291,8 +327,15 @@ async function SessionWorkspaceContent({
                       </TableCell>
                     </TableRow>
                   ) : (
-                    sess.assignments.map((asg) => (
-                      <TableRow key={asg.id}>
+                    sess.assignments.map(
+                      (asg: {
+                        id: string;
+                        title: string;
+                        type: string;
+                        deadline: Date | string;
+                        _count: { submissions: number };
+                      }) => (
+                        <TableRow key={asg.id}>
                         <TableCell className="font-semibold text-foreground">{asg.title}</TableCell>
                         <TableCell>
                           <Badge variant="outline" className="text-[10px] font-mono">
