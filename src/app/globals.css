@@ -1,0 +1,175 @@
+@import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #faf8ff;
+  --foreground: #131b2e;
+  --card: #ffffff;
+  --card-foreground: #131b2e;
+  --popover: #ffffff;
+  --popover-foreground: #131b2e;
+  --primary: #004ac6;
+  --primary-foreground: #ffffff;
+  --secondary: #006c4a;
+  --secondary-foreground: #ffffff;
+  --muted: #f2f3ff;
+  --muted-foreground: #434655;
+  --accent: #eaedff;
+  --accent-foreground: #131b2e;
+  --destructive: #dc2626;
+  --destructive-foreground: #ffffff;
+  --border: #e2e8f0;
+  --input: #c3c6d7;
+  --ring: #004ac6;
+  --radius: 0.5rem;
+
+  /* Semantic LMS Status */
+  --status-present: #059669;
+  --status-late: #d97706;
+  --status-excused: #0284c7;
+  --status-absent: #dc2626;
+
+  /* Stitch Neon Tokyo Accents */
+  --neon-pink: #ff2d78;
+  --neon-cyan: #006c4a;
+  --neon-yellow: #d97706;
+  --neon-purple: #7c3aed;
+  --surface-low: #f2f3ff;
+  --surface-high: #e2e7ff;
+}
+
+.dark {
+  --background: #0a0a14;
+  --foreground: #f1eefc;
+  --card: #14122b;
+  --card-foreground: #f1eefc;
+  --popover: #1a1638;
+  --popover-foreground: #f1eefc;
+  --primary: #ff2d78;
+  --primary-foreground: #ffffff;
+  --secondary: #00f0ff;
+  --secondary-foreground: #001a1a;
+  --muted: #1c1836;
+  --muted-foreground: #aba3cb;
+  --accent: #221d42;
+  --accent-foreground: #f1eefc;
+  --destructive: #ff4466;
+  --destructive-foreground: #ffffff;
+  --border: #2b244d;
+  --input: #322b54;
+  --ring: #ff2d78;
+
+  /* Semantic LMS Status (Neon Tokyo) */
+  --status-present: #00f0ff;
+  --status-late: #ffe04a;
+  --status-excused: #38bdf8;
+  --status-absent: #ff4466;
+
+  /* Stitch Neon Tokyo Accents */
+  --neon-pink: #ff2d78;
+  --neon-cyan: #00f0ff;
+  --neon-yellow: #ffe04a;
+  --neon-purple: #b026ff;
+  --surface-low: #100e22;
+  --surface-high: #1a1638;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-sans: var(--font-sans);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius: var(--radius);
+
+  --color-status-present: var(--status-present);
+  --color-status-late: var(--status-late);
+  --color-status-excused: var(--status-excused);
+  --color-status-absent: var(--status-absent);
+
+  --color-neon-pink: var(--neon-pink);
+  --color-neon-cyan: var(--neon-cyan);
+  --color-neon-yellow: var(--neon-yellow);
+  --color-neon-purple: var(--neon-purple);
+  --color-surface-low: var(--surface-low);
+  --color-surface-high: var(--surface-high);
+
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), "JetBrains Mono", ui-monospace, monospace;
+  --font-headline: var(--font-sora), var(--font-geist-sans), sans-serif;
+  --font-label: var(--font-space-grotesk), var(--font-geist-sans), sans-serif;
+}
+
+/* Neon Glow & Technical Accents from Stitch */
+.neon-glow-pink {
+  box-shadow: 0 0 20px -2px rgba(255, 45, 120, 0.4), 0 0 10px -1px rgba(255, 45, 120, 0.2);
+}
+
+.neon-glow-cyan {
+  box-shadow: 0 0 20px -2px rgba(0, 240, 255, 0.35), 0 0 10px -1px rgba(0, 240, 255, 0.15);
+}
+
+.neon-glow-purple {
+  box-shadow: 0 0 20px -2px rgba(176, 38, 255, 0.35);
+}
+
+.neon-border-pink {
+  border-color: rgba(255, 45, 120, 0.45);
+  box-shadow: 0 0 16px -2px rgba(255, 45, 120, 0.2);
+}
+
+.neon-border-cyan {
+  border-color: rgba(0, 240, 255, 0.45);
+  box-shadow: 0 0 16px -2px rgba(0, 240, 255, 0.18);
+}
+
+.tabular-numbers {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Custom Scrollbar for dense matrices */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--muted-foreground);
+}
+
